@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Formulário de Pesquisa para descobrir se você tem mente empreendedora.">
+    <title>Formulário de Pesquisa</title>
+    <link rel="stylesheet" href="webform-mente.css">
+    <style>
+        /* Estilo básico para .hidden já que o CSS externo pode demorar um microssegundo */
+        .hidden {
+            display: none;
+        }
+        /* Estilo para o banner de ambiente */
+        .environment-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            font-size: 12px;
+            z-index: 1000;
+            display: none;
+        }
+    </style>
+    <script>
+        // Detectar ambiente e mostrar banner se for preview
+        document.addEventListener('DOMContentLoaded', () => {
+            const isPreviewEnvironment = 
+                window.location.hostname === 'localhost' || 
+                window.location.hostname.includes('vercel.app') ||
+                window.location.hostname.includes('v0.dev');
+            
+            if (isPreviewEnvironment) {
+                const banner = document.getElementById('environment-banner');
+                if (banner) {
+                    banner.style.display = 'block';
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+    <!-- Banner de ambiente -->
+    <div id="environment-banner" class="environment-banner">
+        Ambiente de Preview - Os dados não serão enviados para o Supabase real
+    </div>
+
+    <div id="intro" class="centered-text">
+        <h1>Tens Mente Empreendedora? >>>> cripto-gemini-11 </h1>
+        <h3>Preencha este inquérito e descubra GRÁTIS agora!</h3>
+        <div class="buttons">
+            <button id="startButton" onclick="startSurvey()">Comece Aqui →</button>
+        </div>
+    </div>
+
+    <form id="myForm" class="hidden" method="POST">
+        <!-- CSRF Token e Timestamp -->
+        <input type="hidden" name="csrf_token" id="csrf_token" value="">
+        <input type="hidden" name="timestamp" id="timestamp">
+        <script>
+            // Gera um token CSRF simples (não seguro criptograficamente, mas ok para exemplo básico)
+            function generateCSRFToken() {
+                return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            }
+            function setCSRFToken() {
+                document.getElementById('csrf_token').value = generateCSRFToken();
+            }
+            // Define o timestamp quando o formulário é potencialmente inicializado
+            function setTimestamp() {
+                 document.getElementById('timestamp').value = new Date().toISOString();
+            }
+            document.addEventListener('DOMContentLoaded', () => {
+                setCSRFToken();
+                setTimestamp(); // Define o timestamp inicial
+            });
+        </script>
+
+        <!-- Seção Cor Favorita -->
+        <div class="form-container active" id="cor-favorita">
+            <div class="form-group">
+                <h2>Qual sua cor favorita?</h2>
+                <div role="radiogroup" aria-labelledby="cor-label">
+                    <div class="option-container">
+                        <input type="radio" id="azul" name="A" value="azul" onclick="autoNext()" required>
+                        <label for="azul">Azul</label>
+                    </div>
+                    <div class="option-container">
+                        <input type="radio" id="vermelho" name="A" value="vermelho" onclick="autoNext()" required>
+                        <label for="vermelho">Vermelho</label>
+                    </div>
+                    <div class="option-container">
+                        <input type="radio" id="verde" name="A" value="verde" onclick="autoNext()" required>
+                        <label for="verde">Verde</label>
+                    </div>
+                    <div class="option-container">
+                        <input type="radio" id="amarelo" name="A" value="amarelo" onclick="autoNext()" required>
+                        <label for="amarelo">Amarelo</label>
+                    </div>
+                </div>
+            </div>
+            <div class="buttons">
+                <button type="button" onclick="navigate(-1)" disabled>← Anterior</button>
+                <button type="button" onclick="navigate(1)">Próximo →</button>
+            </div>
+        </div>
+        <!-- Seção Animal -->
+        <div class="form-container" id="animal-favorito">
+            <div class="form-group">
+                <h2>Qual seu animal favorito?</h2>
+                <div role="radiogroup" aria-labelledby="animal-label">
+                    <div class="option-container">
+                        <input type="radio" id="cao" name="B" value="cão" onclick="autoNext()" required>
+                        <label for="cao">Cão</label>
+                    </div>
+                    <div class="option-container">
+                        <input type="radio" id="gato" name="B" value="gato" onclick="autoNext()" required>
+                        <label for="gato">Gato</label>
+                    </div>
+                    <div class="option-container">
+                        <input type="radio" id="leao" name="B" value="leão" onclick="autoNext()" required>
+                        <label for="leao">Leão</label>
+                    </div>
+                    <div class="option-container">
+                        <input type="radio" id="zebra" name="B" value="zebra" onclick="autoNext()" required>
+                        <label for="zebra">Zebra</label>
+                    </div>
+                </div>
+            </div>
+            <div class="buttons">
+                <button type="button" onclick="navigate(-1)">← Anterior</button>
+                <button type="button" onclick="navigate(1)">Próximo →</button>
+            </div>
+        </div>
+        <!-- Seção Hobbies -->
+        <div class="form-container" id="hobby-favorito">
+            <div class="form-group">
+                <h2>Qual seu hobby favorito?</h2>
+                <div role="radiogroup" aria-labelledby="hobby-label">
+                    <div class="option-container">
+                        <input type="radio" id="musica" name="C" value="música" onclick="autoNext()" required>
+                        <label for="musica">Música</label>
+                    </div>
+                    <div class="option-container">
+                        <input type="radio" id="ler" name="C" value="ler" onclick="autoNext()" required>
+                        <label for="ler">Leitura</label>
+                    </div>
+                    <div class="option-container">
+                        <input type="radio" id="teatro" name="C" value="teatro" onclick="autoNext()" required>
+                        <label for="teatro">Teatro</label>
+                    </div>
+                    <div class="option-container">
+                        <input type="radio" id="arte" name="C" value="arte" onclick="autoNext()" required>
+                        <label for="arte">Arte</label>
+                    </div>
+                </div>
+            </div>
+            <div class="buttons">
+                <button type="button" onclick="navigate(-1)">← Anterior</button>
+                <button type="button" onclick="navigate(1)">Próximo →</button>
+            </div>
+        </div>
+        <!-- Seção Dados Pessoais -->
+        <div class="form-container" id="dados-pessoais">
+            <div class="form-group">
+                <label for="nome">Nome completo</label>
+                <input type="text"
+                       id="nome"
+                       name="Nome"
+                       required
+                       pattern="[A-Za-zÀ-ú\s]+"
+                       title="Por favor, insira apenas letras e espaços."
+                >
+            </div>
+            <div class="buttons">
+                <button type="button" onclick="navigate(-1)">← Anterior</button>
+                <button type="button" onclick="navigate(1)">Próximo →</button>
+            </div>
+        </div>
+        <!-- Seção Contato -->
+        <div class="form-container" id="dados-contato">
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email"
+                       id="email"
+                       name="Email"
+                       required
+                       pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+                >
+            </div>
+            <div class="buttons">
+                <button type="button" onclick="navigate(-1)">← Anterior</button>
+                <button type="submit" id="submitButton">Enviar formulário</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Modal para avisos -->
+    <div id="alertModal" class="modal">
+      <div class="modal-content">
+        <p id="modalMessage"></p>
+        <button onclick="closeModal()">OK</button>
+      </div>
+    </div>
+
+    <!-- Mensagem Flash para feedback -->
+    <div id="flashMessage" class="flash-message" role="alert" aria-live="assertive"></div>
+
+    <style>
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 100;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.4);
+      }
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 400px;
+        border-radius: 10px;
+        text-align: center;
+      }
+      .modal-content button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 15px;
+      }
+      @media (max-width: 600px) {
+        .modal-content {
+          margin: 30% auto;
+          width: 90%;
+        }
+      }
+    </style>
+
+    <!-- Carregar scripts na ordem correta -->
+    <!-- 1. Biblioteca Supabase (via CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- 2. Navegação do formulário (não é um módulo) -->
+    <script src="webform-mente-navigate.js"></script>
+
+    <!-- 3. Configuração do Supabase (não é um módulo) -->
+    <script src="supabase-config.js"></script>
+
+    <!-- 4. Manipulador de formulário (não é um módulo) -->
+    <script src="form-handler.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Obrigado por preencher o formulário de pesquisa.">
+  <title>Obrigado pela Participação</title>
+  <link rel="stylesheet" href="webform-mente.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+      /* Estilo para o banner de ambiente */
+      .environment-banner {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          padding: 5px 10px;
+          background-color: #4CAF50;
+          color: white;
+          text-align: center;
+          font-size: 12px;
+          z-index: 1000;
+          display: none;
+      }
+  </style>
+  <script>
+      // Detectar ambiente e mostrar banner se for preview
+      document.addEventListener('DOMContentLoaded', () => {
+          const isPreviewEnvironment = 
+              window.location.hostname === 'localhost' || 
+              window.location.hostname.includes('vercel.app') ||
+              window.location.hostname.includes('v0.dev');
+          
+          if (isPreviewEnvironment) {
+              const banner = document.getElementById('environment-banner');
+              if (banner) {
+                  banner.style.display = 'block';
+              }
+          }
+      });
+  </script>
+</head>
+<body>
+  <!-- Banner de ambiente -->
+  <div id="environment-banner" class="environment-banner">
+      Ambiente de Preview - Esta é a página de agradecimento
+  </div>
+
+  <div class="thank-you-container" style="margin-top: 40px;">
+      <div class="thank-you-icon">
+          <i class="fas fa-check-circle"></i>
+      </div>
+      <h1>Obrigado pela sua participação!</h1>
+      <p>Recebemos suas respostas com sucesso. Agradecemos por dedicar seu tempo para preencher nossa pesquisa.</p>
+      <p>Suas respostas são muito importantes para nós e nos ajudarão a melhorar nossos serviços.</p>
+      <a href="index.html" class="btn">Voltar para o início</a>
+  </div>
+</body>
+</html>
+
